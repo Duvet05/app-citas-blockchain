@@ -16,14 +16,14 @@ module.exports = {
     hardhat: {
       chainId: 1337,
     },
-    syscoinTestnet: {
-      url: process.env.SYSCOIN_TESTNET_RPC || "https://rpc.tanenbaum.io",
-      chainId: 5700,
+    rolluxTestnet: {
+      url: process.env.ROLLUX_TESTNET_RPC || "https://rpc-tanenbaum.rollux.com",
+      chainId: 57000,
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
     },
-    syscoinMainnet: {
-      url: process.env.SYSCOIN_MAINNET_RPC || "https://rpc.syscoin.org",
-      chainId: 57,
+    rolluxMainnet: {
+      url: process.env.ROLLUX_MAINNET_RPC || "https://rpc.rollux.com",
+      chainId: 570,
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
     },
   },

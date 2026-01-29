@@ -1,10 +1,10 @@
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 import { defineChain } from 'viem';
 
-// Define Syscoin Tanenbaum Testnet
-export const syscoinTestnet = defineChain({
-  id: 5700,
-  name: 'Syscoin Tanenbaum Testnet',
+// Define Rollux Tanenbaum Testnet
+export const rolluxTestnet = defineChain({
+  id: 57000,
+  name: 'Rollux Tanenbaum Testnet',
   nativeCurrency: {
     decimals: 18,
     name: 'Syscoin',
@@ -12,25 +12,25 @@ export const syscoinTestnet = defineChain({
   },
   rpcUrls: {
     default: {
-      http: ['https://rpc.tanenbaum.io'],
+      http: ['https://rpc-tanenbaum.rollux.com'],
     },
     public: {
-      http: ['https://rpc.tanenbaum.io'],
+      http: ['https://rpc-tanenbaum.rollux.com'],
     },
   },
   blockExplorers: {
     default: {
-      name: 'Syscoin Testnet Explorer',
-      url: 'https://tanenbaum.io',
+      name: 'Rollux Testnet Explorer',
+      url: 'https://rollux.tanenbaum.io',
     },
   },
   testnet: true,
 });
 
-// Define Syscoin Mainnet
-export const syscoinMainnet = defineChain({
-  id: 57,
-  name: 'Syscoin Mainnet',
+// Define Rollux Mainnet
+export const rolluxMainnet = defineChain({
+  id: 570,
+  name: 'Rollux Mainnet',
   nativeCurrency: {
     decimals: 18,
     name: 'Syscoin',
@@ -38,16 +38,16 @@ export const syscoinMainnet = defineChain({
   },
   rpcUrls: {
     default: {
-      http: ['https://rpc.syscoin.org'],
+      http: ['https://rpc.rollux.com'],
     },
     public: {
-      http: ['https://rpc.syscoin.org'],
+      http: ['https://rpc.rollux.com'],
     },
   },
   blockExplorers: {
     default: {
-      name: 'Syscoin Explorer',
-      url: 'https://explorer.syscoin.org',
+      name: 'Rollux Explorer',
+      url: 'https://explorer.rollux.com',
     },
   },
 });
@@ -55,6 +55,6 @@ export const syscoinMainnet = defineChain({
 export const config = getDefaultConfig({
   appName: 'Web3 Dating App',
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'YOUR_PROJECT_ID',
-  chains: [syscoinTestnet, syscoinMainnet],
+  chains: [rolluxTestnet, rolluxMainnet],
   ssr: true,
 });

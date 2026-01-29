@@ -1,6 +1,6 @@
 # 💖 Cupido PoDA - Web3 Dating App
 
-**dApp de citas Web3 con verificación de identidad usando PoDA de Syscoin**
+**dApp de citas Web3 desplegada en Rollux (Syscoin Layer 2)**
 
 Proof of Builders Hackathon - Syscoin Perú 🇵🇪 2026
 
@@ -102,8 +102,8 @@ Editar `.env`:
 PRIVATE_KEY=tu_private_key_aqui
 
 # URLs de RPC (opcional, usa los defaults)
-SYSCOIN_TESTNET_RPC=https://rpc.tanenbaum.io
-SYSCOIN_MAINNET_RPC=https://rpc.syscoin.org
+ROLLUX_TESTNET_RPC=https://rpc-tanenbaum.rollux.com
+ROLLUX_MAINNET_RPC=https://rpc.rollux.com
 ```
 
 Crear archivo `frontend/.env.local`:
@@ -116,9 +116,9 @@ cp .env.local.example .env.local
 Editar `frontend/.env.local`:
 
 ```env
-NEXT_PUBLIC_CHAIN_ID=5700
-NEXT_PUBLIC_CHAIN_NAME="Syscoin Tanenbaum Testnet"
-NEXT_PUBLIC_RPC_URL=https://rpc.tanenbaum.io
+NEXT_PUBLIC_CHAIN_ID=57000
+NEXT_PUBLIC_CHAIN_NAME="Rollux Tanenbaum Testnet"
+NEXT_PUBLIC_RPC_URL=https://rpc-tanenbaum.rollux.com
 
 # Estos se actualizan después del deployment
 NEXT_PUBLIC_PROFILE_NFT_ADDRESS=
@@ -182,7 +182,7 @@ Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
 - Haz clic en "Connect Wallet"
 - Conecta MetaMask
-- Asegúrate de estar en Syscoin Tanenbaum Testnet (Chain ID: 5700)
+- Asegúrate de estar en Rollux Tanenbaum Testnet (Chain ID: 57000)
 
 ### 2. Crear Perfil
 
@@ -345,9 +345,9 @@ npx hardhat verify --network syscoinTestnet CONTRACT_ADDRESS [CONSTRUCTOR_ARGS]
 - Framer Motion
 
 ### Blockchain
-- Syscoin (EVM-compatible)
-- Testnet: Tanenbaum (Chain ID: 5700)
-- Mainnet: Syscoin (Chain ID: 57)
+- Rollux (Syscoin Layer 2 - Optimistic Rollup)
+- Testnet: Rollux Tanenbaum (Chain ID: 57000)
+- Mainnet: Rollux (Chain ID: 570)
 
 ## 🎨 Diseño y UX
 
@@ -432,9 +432,9 @@ Desarrollado para **Proof of Builders** - Syscoin Hackathon Perú 🇵🇪 2026
 - La edad mínima es 18 años (validación on-chain)
 
 ### MetaMask no conecta
-- Verifica que estés en Syscoin Tanenbaum Testnet
-- Chain ID: 5700
-- RPC: https://rpc.tanenbaum.io
+- Verifica que estés en Rollux Tanenbaum Testnet
+- Chain ID: 57000
+- RPC: https://rpc-tanenbaum.rollux.com
 
 ### Transacciones fallan
 - Asegúrate de tener SYS tokens en testnet
