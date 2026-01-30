@@ -22,6 +22,7 @@ out/
 cache/
 artifacts/
 typechain-types/
+deployments/*-demo-wallets.json
 
 # IDE
 .vscode/

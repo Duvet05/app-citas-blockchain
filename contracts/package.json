@@ -7,7 +7,9 @@
     "test": "hardhat test",
     "deploy": "hardhat run scripts/deploy.js",
     "deploy:testnet": "hardhat run scripts/deploy.js --network rolluxTestnet",
-    "deploy:mainnet": "hardhat run scripts/deploy.js --network rolluxMainnet"
+    "deploy:mainnet": "hardhat run scripts/deploy.js --network rolluxMainnet",
+    "seed:testnet": "hardhat run scripts/seed.js --network rolluxTestnet",
+    "seed:mainnet": "hardhat run scripts/seed.js --network rolluxMainnet"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
