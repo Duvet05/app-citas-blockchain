@@ -4,7 +4,6 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 
 /**
  * @title ProfileNFT
@@ -12,8 +11,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
  * Each user can only have ONE profile NFT
  */
 contract ProfileNFT is ERC721, ERC721URIStorage, Ownable {
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenIdCounter;
+    uint256 private _tokenIdCounter;
 
     // Mapping from address to profile token ID (one profile per address)
     mapping(address => uint256) public addressToProfile;
@@ -61,8 +59,8 @@ contract ProfileNFT is ERC721, ERC721URIStorage, Ownable {
         require(_age >= 18, "Must be 18 or older");
         require(bytes(_name).length > 0, "Name cannot be empty");
 
-        uint256 tokenId = _tokenIdCounter.current();
-        _tokenIdCounter.increment();
+        uint256 tokenId = _tokenIdCounter;
+        _tokenIdCounter++;
 
         _safeMint(msg.sender, tokenId);
         _setTokenURI(tokenId, _tokenURI);
@@ -164,18 +162,27 @@ contract ProfileNFT is ERC721, ERC721URIStorage, Ownable {
      * @dev Get total number of profiles
      */
     function getTotalProfiles() public view returns (uint256) {
-        return _tokenIdCounter.current();
+        return _tokenIdCounter;
     }
 
     /**
-     * @dev Override transfer functions to prevent profile trading
+     * @dev Override _update to prevent transfers (soulbound NFT)
+     * Only minting is allowed (from == address(0))
      */
-    function _transfer(
-        address from,
+    function _update(
         address to,
-        uint256 tokenId
-    ) internal virtual override {
-        revert("Profile NFTs are soulbound and cannot be transferred");
+        uint256 tokenId,
+        address auth
+    ) internal virtual override returns (address) {
+        address from = _ownerOf(tokenId);
+        
+        // Allow minting (from == address(0))
+        // Block all transfers (from != address(0))
+        if (from != address(0)) {
+            revert("Profile NFTs are soulbound and cannot be transferred");
+        }
+        
+        return super._update(to, tokenId, auth);
     }
 
     // Required overrides
