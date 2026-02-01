@@ -7,8 +7,9 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title ProfileNFT
- * @dev NFT contract for user dating profiles
- * Each user can only have ONE profile NFT
+ * @dev NFT contract for user karma profiles
+ * Each user can only have ONE profile NFT (soulbound)
+ * Represents participation in the karma system
  */
 contract ProfileNFT is ERC721, ERC721URIStorage, Ownable {
     uint256 private _tokenIdCounter;
@@ -38,7 +39,7 @@ contract ProfileNFT is ERC721, ERC721URIStorage, Ownable {
     event ProfileDeactivated(uint256 indexed tokenId);
     event ProfileReactivated(uint256 indexed tokenId);
 
-    constructor() ERC721("DatingProfile", "DPROFILE") Ownable(msg.sender) {}
+    constructor() ERC721("KarmaProfile", "KARMA") Ownable(msg.sender) {}
 
     /**
      * @dev Create a new profile NFT

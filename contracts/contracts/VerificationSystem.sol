@@ -5,10 +5,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./ProfileNFT.sol";
 
 /**
- * @title VerificationSystem
- * @dev Simple verification system for user attributes
- * In production, this would integrate with ZK-proof systems
- * For MVP, we use a trusted verifier approach
+ * @title VerificationSystem (Education & Participation Tracking)
+ * @dev Tracks completion of educational modules and participation badges
+ * Users complete modules about healthy relationships, consent, communication
+ * Verifications act as "education completion certificates" (NFT-like badges)
  */
 contract VerificationSystem is Ownable {
     ProfileNFT public profileNFT;

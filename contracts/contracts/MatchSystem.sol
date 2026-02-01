@@ -4,8 +4,10 @@ pragma solidity ^0.8.20;
 import "./ProfileNFT.sol";
 
 /**
- * @title MatchSystem
- * @dev Handles likes and matches between dating profiles
+ * @title MatchSystem (Recognition System)
+ * @dev Handles peer-to-peer recognitions (karma NFTs gifted between users)
+ * A "like" represents a positive recognition that costs gas (anti-spam)
+ * A "match" represents mutual recognition between two users
  */
 contract MatchSystem {
     ProfileNFT public profileNFT;
