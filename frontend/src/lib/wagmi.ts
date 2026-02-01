@@ -53,7 +53,7 @@ export const rolluxMainnet = defineChain({
 });
 
 export const config = getDefaultConfig({
-  appName: 'Web3 Dating App',
+  appName: 'Cupido PoDA - Sistema de Karma Social',
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'YOUR_PROJECT_ID',
   chains: [rolluxTestnet, rolluxMainnet],
   ssr: true,

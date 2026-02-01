@@ -69,15 +69,15 @@ export function useProfile(address?: Address) {
     });
   };
 
-  const profile: Profile | null = profileData
+  const profile: Profile | null = profileData && Array.isArray(profileData)
     ? {
-        tokenId: profileData[0],
-        name: profileData[1],
-        age: profileData[2],
-        bio: profileData[3],
-        interests: profileData[4],
-        createdAt: profileData[5],
-        isActive: profileData[6],
+        tokenId: profileData[0] as bigint,
+        name: profileData[1] as string,
+        age: profileData[2] as bigint,
+        bio: profileData[3] as string,
+        interests: profileData[4] as string,
+        createdAt: profileData[5] as bigint,
+        isActive: profileData[6] as boolean,
       }
     : null;
 

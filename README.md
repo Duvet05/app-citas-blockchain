@@ -1,6 +1,6 @@
-# 💖 Cupido PoDA - Web3 Dating App
+# 💫 Cupido PoDA - Sistema de Karma Social con Blockchain
 
-**dApp de citas Web3 desplegada en Rollux (Syscoin Layer 2)**
+**Sistema de reputación basado en comportamiento desplegado en Rollux (Syscoin Layer 2)**
 
 Proof of Builders Hackathon - Syscoin Perú 🇵🇪 2026
 
@@ -8,10 +8,11 @@ Proof of Builders Hackathon - Syscoin Perú 🇵🇪 2026
 
 ## 🎯 El Proyecto
 
-**Cupido PoDA** resuelve dos problemas críticos de las apps de citas tradicionales:
+**Cupido PoDA** es un sistema de karma on-chain que reconoce y registra comportamientos positivos en interacciones sociales:
 
-1. **Perfiles Falsos**: Cada perfil es un NFT soulbound único (un perfil por wallet)
-2. **Falta de Confianza**: Verificación de identidad usando **PoDA** sin exponer datos personales
+1. **Karma Acumulativo**: Las buenas acciones se registran como NFTs (no transferibles)
+2. **Reconocimiento entre Pares**: Los usuarios pueden reconocer interacciones positivas mutuamente
+3. **Educación Relacional**: Módulos sobre vínculos sanos, comunicación y responsabilidad emocional
 
 ### ¿Qué es PoDA?
 
@@ -25,11 +26,12 @@ Proof of Builders Hackathon - Syscoin Perú 🇵🇪 2026
 
 ## ✨ Features
 
-- ✅ **Perfiles NFT Soulbound** (no transferibles)
-- ✅ **Sistema de Matches On-chain** (likes transparentes)
-- ✅ **Verificación con PoDA** (privacidad + confianza)
-- ✅ **UI Tipo Tinder** (swipe familiar)
-- ✅ **100% Transparente** (todo en Syscoin blockchain)
+- ✅ **Perfiles de Karma NFT** (soulbound, un perfil por wallet)
+- ✅ **Sistema de Reconocimiento P2P** (usuarios se reconocen mutuamente)
+- ✅ **Badges de Participación** (registro de actividad on-chain)
+- ✅ **Módulos Educativos** (aprende sobre vínculos sanos)
+- ✅ **Sin Datos Personales** (solo acciones, no identidad)
+- ✅ **100% Transparente** (todo verificable en blockchain)
 
 ## 🏗️ Arquitectura del Proyecto
 
@@ -37,9 +39,9 @@ Proof of Builders Hackathon - Syscoin Perú 🇵🇪 2026
 app-citas-blockchain/
 ├── contracts/              # Smart contracts (Hardhat)
 │   ├── contracts/
-│   │   ├── ProfileNFT.sol           # NFT de perfiles (soulbound)
-│   │   ├── MatchSystem.sol          # Sistema de likes y matches
-│   │   └── VerificationSystem.sol   # Verificaciones de identidad
+│   │   ├── ProfileNFT.sol           # NFT de perfiles de karma (soulbound)
+│   │   ├── MatchSystem.sol          # Sistema de reconocimiento P2P
+│   │   └── VerificationSystem.sol   # Sistema educativo y badges
 │   ├── scripts/
 │   │   └── deploy.js
 │   ├── test/
