@@ -1,411 +1,191 @@
-# 💫 Cupido PoDA - Sistema de Karma Social con Blockchain
+# 💫 Cupido PoDA - Sistema de Karma Social
 
-**Sistema de reputación basado en comportamiento desplegado en Rollux (Syscoin Layer 2)**
+**Sistema de reputación on-chain para reconocimiento de comportamientos positivos**
 
 Proof of Builders Hackathon - Syscoin Perú 🇵🇪 2026
 
 ---
 
+## 🚀 Quick Start (Demo Local)
+
+**Ver [DEMO-HACKATHON.md](DEMO-HACKATHON.md) para instrucciones completas.**
+
+```bash
+# Terminal 1: Hardhat node
+cd contracts && npx hardhat node
+
+# Terminal 2: Frontend
+cd frontend && npm run dev
+```
+
+Luego configura MetaMask con Hardhat Local (Chain ID 31337) y abre http://localhost:3000
+
+---
+
 ## 🎯 El Proyecto
 
-**Cupido PoDA** es un sistema de karma on-chain que reconoce y registra comportamientos positivos en interacciones sociales:
+**Cupido PoDA** registra comportamientos positivos en interacciones sociales usando blockchain:
 
-1. **Karma Acumulativo**: Las buenas acciones se registran como NFTs (no transferibles)
-2. **Reconocimiento entre Pares**: Los usuarios pueden reconocer interacciones positivas mutuamente
-3. **Educación Relacional**: Módulos sobre vínculos sanos, comunicación y responsabilidad emocional
+- **Karma Acumulativo**: Acciones positivas registradas como NFTs soulbound
+- **Reconocimiento P2P**: Usuarios reconocen interacciones positivas mutuamente
+- **Sin Datos Personales**: Solo se registran acciones, no identidades
+- **UI estilo Reddit**: Dashboard de karma con Carbon Design System
 
-### ¿Qué es PoDA?
+## ✨ Features Implementadas
 
-**PoDA** (Proof of Data Availability) es la tecnología diferencial de Syscoin que permite:
-- ✅ Demostrar que datos existen y son válidos
-- ✅ Sin mostrarlos públicamente
-- ✅ Sin almacenarlos on-chain
-- ✅ Privacidad con seguridad nivel Bitcoin
+- ✅ **Perfiles NFT Soulbound** - Un perfil por wallet, no transferible
+- ✅ **Sistema de Reconocimientos** - Dar y recibir karma
+- ✅ **Cálculo Dinámico de Karma** - Basado en interacciones on-chain
+- ✅ **UI con Carbon Design System** - Componentes estilo Reddit
+- ✅ **Testing Completo** - 55/55 tests passing (100%)
+- ✅ **Listo para Syscoin NEVM** - Solo requiere fondos de testnet
 
-**Aplicación**: Verificar edad, identidad, antecedentes sin revelar documentos.
-
-## ✨ Features
-
-- ✅ **Perfiles de Karma NFT** (soulbound, un perfil por wallet)
-- ✅ **Sistema de Reconocimiento P2P** (usuarios se reconocen mutuamente)
-- ✅ **Badges de Participación** (registro de actividad on-chain)
-- ✅ **Módulos Educativos** (aprende sobre vínculos sanos)
-- ✅ **Sin Datos Personales** (solo acciones, no identidad)
-- ✅ **100% Transparente** (todo verificable en blockchain)
-
-## 🏗️ Arquitectura del Proyecto
+## 🏗️ Arquitectura
 
 ```
 app-citas-blockchain/
-├── contracts/              # Smart contracts (Hardhat)
+├── contracts/
 │   ├── contracts/
-│   │   ├── ProfileNFT.sol           # NFT de perfiles de karma (soulbound)
-│   │   ├── MatchSystem.sol          # Sistema de reconocimiento P2P
-│   │   └── VerificationSystem.sol   # Sistema educativo y badges
+│   │   ├── ProfileNFT.sol           # Perfiles de karma (soulbound)
+│   │   ├── MatchSystem.sol          # Reconocimientos P2P
+│   │   └── VerificationSystem.sol   # Badges y educación
 │   ├── scripts/
-│   │   └── deploy.js
-│   ├── test/
-│   └── hardhat.config.js
+│   │   ├── deploy.js                # Deployment a testnet
+│   │   ├── deployLocal.js           # Deployment local con datos demo
+│   │   ├── seed.js                  # Crear datos de prueba
+│   │   └── verifyWallet.js          # Verificar balance
+│   ├── test/                        # 55 tests (100% passing)
+│   └── hardhat.config.js            # Syscoin NEVM + Rollux + Local
 │
-└── frontend/              # Frontend (Next.js + TypeScript)
+└── frontend/                        # Next.js 14 + TypeScript
     ├── src/
-    │   ├── components/    # Componentes React
-    │   ├── hooks/         # Custom hooks para Web3
-    │   ├── lib/           # Configuración Wagmi/RainbowKit
-    │   ├── pages/         # Páginas de Next.js
-    │   └── styles/        # Estilos Tailwind
-    └── package.json
+    │   ├── pages/
+    │   │   ├── index.tsx            # Landing page
+    │   │   └── dashboard.tsx        # Dashboard de karma
+    │   ├── components/
+    │   │   └── KarmaScore.tsx       # Componente de karma (Carbon UI)
+    │   ├── hooks/
+    │   │   ├── useProfile.ts        # Hook para perfiles
+    │   │   └── useMatches.ts        # Hook para reconocimientos
+    │   └── lib/
+    │       └── wagmi.ts             # Config Web3 (RainbowKit)
+    └── .env.local                   # Config de red y contratos
 ```
 
-## 🚀 Instalación y Configuración
-
-### Prerrequisitos
-
-- Node.js v18+ y npm
-- MetaMask u otra wallet Web3
-- SYS testnet tokens (obtener del faucet)
-
-### 1. Clonar el Repositorio
+## 📦 Instalación
 
 ```bash
-git clone <repository-url>
-cd app-citas-blockchain
-```
-
-### 2. Instalar Dependencias
-
-```bash
-# Instalar dependencias del proyecto
+# 1. Instalar dependencias
 npm install
+cd contracts && npm install && cd ..
+cd frontend && npm install && cd ..
 
-# Instalar dependencias de contratos
-cd contracts
-npm install
-cd ..
-
-# Instalar dependencias del frontend
-cd frontend
-npm install
-cd ..
-```
-
-### 3. Configurar Variables de Entorno
-
-Crear archivo `.env` en la raíz:
-
-```bash
+# 2. Configurar .env (ver .env de ejemplo)
 cp .env.example .env
-```
 
-Editar `.env`:
-
-```env
-# Private key para deployment (SIN el prefijo 0x)
-PRIVATE_KEY=tu_private_key_aqui
-
-# URLs de RPC (opcional, usa los defaults)
-ROLLUX_TESTNET_RPC=https://rpc-tanenbaum.rollux.com
-ROLLUX_MAINNET_RPC=https://rpc.rollux.com
-```
-
-Crear archivo `frontend/.env.local`:
-
-```bash
-cd frontend
-cp .env.local.example .env.local
-```
-
-Editar `frontend/.env.local`:
-
-```env
-NEXT_PUBLIC_CHAIN_ID=57000
-NEXT_PUBLIC_CHAIN_NAME="Rollux Tanenbaum Testnet"
-NEXT_PUBLIC_RPC_URL=https://rpc-tanenbaum.rollux.com
-
-# Estos se actualizan después del deployment
-NEXT_PUBLIC_PROFILE_NFT_ADDRESS=
-NEXT_PUBLIC_MATCH_SYSTEM_ADDRESS=
-NEXT_PUBLIC_VERIFICATION_SYSTEM_ADDRESS=
-
-# WalletConnect (opcional, obtener de https://cloud.walletconnect.com)
-NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=
-```
-
-## 📝 Deployment de Smart Contracts
-
-### 1. Compilar Contratos
-
-```bash
+# 3. Compilar y testear contratos
 cd contracts
 npm run compile
+npm test  # 55/55 tests passing
+
+# 4. Deploy local para demo
+npx hardhat node  # Terminal 1
+npm run deployLocal  # Terminal 2
+
+# 5. Frontend
+cd ../frontend
+npm run dev  # http://localhost:3000
 ```
 
-### 2. Ejecutar Tests (Opcional)
+## 🧪 Testing
 
 ```bash
-npm run test
+cd contracts
+npm test
 ```
 
-### 3. Deploy en Syscoin Testnet
+**Resultado:**
+```
+55 passing (100%)
 
-```bash
-npm run deploy:testnet
+ProfileNFT Tests: 19/19 ✅
+MatchSystem Tests: 18/18 ✅
+VerificationSystem Tests: 18/18 ✅
 ```
 
-Esto desplegará los 3 contratos:
-- ProfileNFT
-- MatchSystem
-- VerificationSystem
+## 🌐 Networks Configuradas
 
-**Importante**: Guarda las direcciones de los contratos desplegados.
+**Hardhat Local (Demo):**
+- Chain ID: 31337
+- RPC: http://127.0.0.1:8545
+- Deployment: [deployments-local.json](contracts/deployments-local.json)
 
-### 4. Actualizar Frontend con Direcciones
+**Syscoin NEVM Testnet (Tanenbaum):**
+- Chain ID: 5700
+- RPC: https://rpc.tanenbaum.io
+- Faucet: https://faucet.tanenbaum.io
+- Deploy: `npm run deploy:syscoin`
 
-Copia las direcciones de los contratos y actualiza `frontend/.env.local`:
+**Rollux Testnet (Layer 2):**
+- Chain ID: 57000
+- RPC: https://rollux.rpc.tanenbaum.io
+- Deploy: `npm run deploy:rollux`
 
-```env
-NEXT_PUBLIC_PROFILE_NFT_ADDRESS=0x...
-NEXT_PUBLIC_MATCH_SYSTEM_ADDRESS=0x...
-NEXT_PUBLIC_VERIFICATION_SYSTEM_ADDRESS=0x...
-```
-
-## 🎨 Ejecutar el Frontend
-
-```bash
-cd frontend
-npm run dev
-```
-
-Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
-
-## 🔧 Uso de la Aplicación
-
-### 1. Conectar Wallet
-
-- Haz clic en "Connect Wallet"
-- Conecta MetaMask
-- Asegúrate de estar en Rollux Tanenbaum Testnet (Chain ID: 57000)
-
-### 2. Crear Perfil
-
-- Haz clic en "Create Your Profile"
-- Completa el formulario:
-  - Nombre (display name)
-  - Edad (18+)
-  - Biografía
-  - Intereses (separados por comas)
-- Confirma la transacción en MetaMask
-- Espera la confirmación
-
-### 3. Explorar Perfiles
-
-- Una vez creado tu perfil, serás redirigido a `/explore`
-- Swipea perfiles:
-  - ❌ Pasar (X)
-  - ❤️ Like (corazón)
-- Si hay match mutuo, se creará automáticamente
-
-### 4. Ver Matches
-
-- Haz clic en el menú (☰) → "My Matches"
-- Verás todos tus matches confirmados on-chain
-
-### 5. Ver Tu Perfil
-
-- Menú → "My Profile"
-- Edita tu perfil (actualiza bio, intereses, etc.)
-
-## 🔐 Sistema de Verificaciones
-
-El contrato `VerificationSystem` permite verificar:
-
-- ✅ **IDENTITY**: Identidad real verificada
-- ✅ **AGE**: Mayor de 18 años
-- ✅ **MARITAL_STATUS**: Estado civil (soltero/a)
-- ✅ **BACKGROUND_CHECK**: Sin antecedentes penales
-- ✅ **EDUCATION**: Credenciales educativas
-- ✅ **EMPLOYMENT**: Estado laboral
-
-### Agregar Verificador (Solo Owner)
-
-```javascript
-// Desde Hardhat console o script
-const verificationSystem = await ethers.getContractAt("VerificationSystem", ADDRESS);
-await verificationSystem.addVerifier("0xVerifierAddress");
-```
-
-### Otorgar Verificación (Como Verifier)
-
-```javascript
-// VerificationType: 0=IDENTITY, 1=AGE, 2=MARITAL_STATUS, etc.
-await verificationSystem.grantVerification(
-  "0xUserAddress",
-  0, // IDENTITY
-  0  // expiresAt (0 = no expira)
-);
-```
-
-## 📦 Estructura de Contratos
+## 📝 Smart Contracts
 
 ### ProfileNFT.sol
+Perfiles de karma como NFTs soulbound (no transferibles).
 
 ```solidity
-// Funciones principales
 createProfile(name, age, bio, interests, tokenURI)
 updateProfile(name, bio, interests, tokenURI)
-deactivateProfile()
-reactivateProfile()
+deactivateProfile() / reactivateProfile()
 getProfileByAddress(address) → Profile
 ```
 
 ### MatchSystem.sol
+Sistema de reconocimientos peer-to-peer con detección de matches mutuos.
 
 ```solidity
-// Funciones principales
-likeProfile(address)
-unmatch(address)
-getActiveMatches(address) → Match[]
-isMatch(address, address) → bool
-getReceivedLikes() → address[]
-getSentLikes() → address[]
+likeProfile(address)           // Dar reconocimiento
+unmatch(address)               // Eliminar match
+getActiveMatches(address)      // Ver matches
+isMatch(address, address)      // Verificar match mutuo
 ```
 
 ### VerificationSystem.sol
+Sistema de badges educativos y verificaciones.
 
 ```solidity
-// Funciones principales
-grantVerification(user, type, expiresAt)
-revokeVerification(user, type)
+addVerifier(address)                    // Solo owner
+grantVerification(user, type, expires)  // Solo verifiers
 isVerified(user, type) → bool
 getUserVerifications(user) → (types[], statuses[], timestamps[])
 ```
 
-## 🎯 Criterios de Hackathon
+## 🎨 Stack Tecnológico
 
-### ✅ Cumplimiento
+**Blockchain:**
+- Solidity 0.8.20
+- Hardhat (development & testing)
+- OpenZeppelin Contracts 5.0.1
+- Ethers.js v6
 
-| Criterio | Estado | Notas |
-|----------|--------|-------|
-| C1 - Buildable in 1 week | ✅ | 3 contratos simples + UI básica |
-| C2 - Standard EVM only | ✅ | Solidity + OpenZeppelin |
-| C3 - UX-first (≤2 min) | ✅ | Connect → Create → Play |
-| C4 - Fun + repeatable | ✅ | Swipe mecánica + matches |
-| C5 - Meaningful on-chain | ✅ | Mint + Like + Match on-chain |
-| C6 - Avoid complexity | ✅ | No oracles, no heavy backend |
-| C7 - DevNet → Mainnet ready | ✅ | Mismo código, solo redeploy |
-| C8 - Generates testnet activity | ✅ | Multiple tx per user |
-| C9 - Clear judging surface | ✅ | Explorer links + eventos |
-
-## 🧪 Testing Local
-
-### 1. Red Local Hardhat
-
-```bash
-# Terminal 1: Levantar nodo local
-cd contracts
-npx hardhat node
-
-# Terminal 2: Deploy en local
-npx hardhat run scripts/deploy.js --network localhost
-
-# Terminal 3: Frontend
-cd frontend
-npm run dev
-```
-
-### 2. Configurar MetaMask para Local
-
-- Network: localhost
-- RPC: http://127.0.0.1:8545
-- Chain ID: 1337
-- Importar una de las cuentas de prueba que proporciona Hardhat
-
-## 🔍 Verificación de Contratos (Opcional)
-
-Si Syscoin tiene block explorer compatible:
-
-```bash
-npx hardhat verify --network syscoinTestnet CONTRACT_ADDRESS [CONSTRUCTOR_ARGS]
-```
-
-## 📚 Stack Tecnológico
-
-### Smart Contracts
-- Solidity ^0.8.20
-- Hardhat
-- OpenZeppelin Contracts
-- Ethers.js
-
-### Frontend
-- Next.js 14
+**Frontend:**
+- Next.js 14 (App Router)
 - TypeScript
-- TailwindCSS
-- Wagmi v2
-- RainbowKit
-- Viem
-- React Hot Toast
-- Framer Motion
+- RainbowKit + Wagmi v2 (Web3)
+- Carbon Design System (UI)
+- TailwindCSS (styling)
+- React Hot Toast (notifications)
 
-### Blockchain
-- Rollux (Syscoin Layer 2 - Optimistic Rollup)
-- Testnet: Rollux Tanenbaum (Chain ID: 57000)
-- Mainnet: Rollux (Chain ID: 570)
+## 📊 Deployment Status
 
-## 🎨 Diseño y UX
-
-### Paleta de Colores
-
-```css
-/* Gradientes principales */
-from-pink-500 to-purple-600  /* Primary gradient */
-from-pink-50 via-purple-50 to-blue-50  /* Background */
-
-/* Colores de verificación */
-green-100/green-800  /* Verified badge */
-yellow-100/yellow-800  /* Pending badge */
-```
-
-### Tipografía
-
-- Font: Inter (sistema sans-serif)
-- Pesos: 400 (regular), 600 (semibold), 700 (bold)
-
-## 🚨 Notas Importantes
-
-### Seguridad
-
-⚠️ **NUNCA** commitear el archivo `.env` con tu private key
-⚠️ **SOLO** usar wallets de testnet durante desarrollo
-⚠️ El sistema de verificación MVP usa "trusted verifiers" - en producción usar ZK-proofs
-
-### Limitaciones MVP
-
-- Imágenes de perfil son placeholders (en producción usar IPFS)
-- Verificaciones usan trusted verifiers (no ZK-proofs aún)
-- Lista de perfiles es simulada (en producción indexar blockchain)
-- No hay chat/mensajería (futura implementación)
-
-### Gas Optimization
-
-Los contratos están optimizados para:
-- Minimizar storage writes
-- Usar eventos para indexación off-chain
-- Evitar loops en funciones view cuando sea posible
-
-## 🤝 Contribuir
-
-Este es un proyecto de hackathon. Para mejoras futuras:
-
-1. Implementar ZK-proofs reales para verificaciones
-2. Agregar IPFS para imágenes de perfil
-3. Sistema de mensajería encriptada
-4. Indexer (The Graph) para query de perfiles
-5. Sistema de reputación on-chain
-6. Integración con oráculos para verificaciones externas
-
-## 📄 Licencia
-
-MIT License
+| Network | Status | Contracts |
+|---------|--------|-----------|
+| Hardhat Local | ✅ Deployed | Ver [deployments-local.json](contracts/deployments-local.json) |
+| Syscoin NEVM Testnet | ⏳ Pending | Esperando fondos de faucet |
+| Rollux Testnet | ⏳ Pending | Esperando fondos de faucet |
 
 ## 👥 Equipo: Cupido PoDA
 
@@ -414,61 +194,46 @@ MIT License
 - Viviana Cortez
 - Pilar Virillas
 - Juan Carlos Mujica
-- Gonzalo Galvez
+- Gonzalo Galvez (Developer)
 - Mely Hidalgo
 - Camilla Arredondo
 
-**Wallet del Equipo**: `0x8AC69d1e78b3CED95289662fd2ca6b4E187434AC`
+**Wallet del Equipo:** `0x8AC69d1e78b3CED95289662fd2ca6b4E187434AC`
 
 Desarrollado para **Proof of Builders** - Syscoin Hackathon Perú 🇵🇪 2026
 
 ---
 
-## 🆘 Troubleshooting
-
-### Error: "Profile already exists"
-- Solo puedes crear un perfil por wallet
-- Usa otra wallet o edita tu perfil existente
-
-### Error: "Must be 18 or older"
-- La edad mínima es 18 años (validación on-chain)
-
-### MetaMask no conecta
-- Verifica que estés en Rollux Tanenbaum Testnet
-- Chain ID: 57000
-- RPC: https://rpc-tanenbaum.rollux.com
-
-### Transacciones fallan
-- Asegúrate de tener SYS tokens en testnet
-- Faucet: [Obtener testnet tokens]
-
-### Frontend no muestra perfiles
-- Verifica que las direcciones de contratos estén en `.env.local`
-- Asegúrate de haber desplegado los contratos primero
-- Revisa la consola del navegador para errores
-
 ## 📞 Recursos
 
-**Syscoin**:
-- Docs: https://docs.syscoin.org
-- Discord: Servidor oficial de Syscoin
-- PoB Forum: https://pob.syscoin.org/forum
+**Documentación:**
+- [DEMO-HACKATHON.md](DEMO-HACKATHON.md) - Guía completa de demo
+- [Syscoin Docs](https://docs.syscoin.org)
 
-**Hackathon**:
-- Grupo oficial del equipo
-- Mentorías disponibles
+**Hackathon:**
+- Proof of Builders Forum: https://pob.syscoin.org/forum
+- Discord: https://discord.gg/syscoin
 
 ---
 
-## 🚀 Estado
+## 🆘 Troubleshooting
 
-```
-✅ Smart Contracts: 3/3 completos
-✅ Frontend: 5/5 páginas
-✅ Web3 Integration: 100%
-✅ Tests: ProfileNFT
-⏳ Deploy: Esperando tSYS
-🎯 Status: PRODUCTION READY
-```
+**MetaMask no conecta a Hardhat Local:**
+- Network: Hardhat Local
+- RPC: http://127.0.0.1:8545
+- Chain ID: 31337
+- Importar wallet de prueba (ver DEMO-HACKATHON.md)
+
+**Frontend no muestra datos:**
+- Verifica que Hardhat node esté corriendo
+- Verifica addresses en `frontend/.env.local`
+- Revisa consola del navegador para errores
+
+**Tests fallan:**
+- `cd contracts && npm install`
+- `npx hardhat clean`
+- `npm test`
+
+---
 
 **Built with ❤️ on Syscoin | Cupido PoDA Team 2026 🚀**
