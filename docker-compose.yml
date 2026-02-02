@@ -1,20 +1,21 @@
 version: '3.8'
 
 services:
-  # Hardhat Node (Blockchain Local)
-  hardhat:
+  # ============ STACK 1 ============
+  # Hardhat Node - Stack 1
+  hardhat-1:
     build:
       context: .
       dockerfile: Dockerfile.hardhat
-    container_name: cupido-hardhat
+    container_name: cupido-hardhat-1
     ports:
-      - "8545:8545" # Expone Hardhat RPC
+      - "8545:8545"
     networks:
       - cupido-network
     volumes:
       - ./contracts:/app/contracts
-      - hardhat-data:/app/contracts/cache
-      - hardhat-artifacts:/app/contracts/artifacts
+      - hardhat-data-1:/app/contracts/cache
+      - hardhat-artifacts-1:/app/contracts/artifacts
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "nc", "-z", "localhost", "8545" ]
@@ -22,14 +23,14 @@ services:
       timeout: 5s
       retries: 5
 
-  # Script de deployment (se ejecuta una vez)
-  deploy:
+  # Deploy contracts - Stack 1
+  deploy-1:
     build:
       context: .
       dockerfile: Dockerfile.hardhat
-    container_name: cupido-deploy
+    container_name: cupido-deploy-1
     depends_on:
-      hardhat:
+      hardhat-1:
         condition: service_healthy
     networks:
       - cupido-network
@@ -40,48 +41,19 @@ services:
       - HARDHAT_NETWORK=localhost
     command: >
       sh -c "
-        echo 'Esperando a que Hardhat esté listo...' &&
-        sleep 5 &&
-        echo 'Desplegando contratos...' &&
+        echo '🚀 Desplegando contratos en Stack 1...' &&
+        sleep 3 &&
         npx hardhat run scripts/deployLocal.js --network localhost &&
-        echo '✅ Deployment completado'
+        echo '✅ Stack 1 deployment completado'
       "
     restart: "no"
 
-  # Frontend - Instancia 1
+  # Frontend - Stack 1
   frontend-1:
     build:
       context: .
       dockerfile: Dockerfile.frontend
     container_name: cupido-frontend-1
-    ports:
-      - "3000:3000"
-    networks:
-      - cupido-network
-    volumes:
-      - ./frontend:/app/frontend
-      - /app/frontend/node_modules
-      - /app/frontend/.next
-    environment:
-      - NEXT_PUBLIC_CHAIN_ID=31337
-      - NEXT_PUBLIC_CHAIN_NAME=Hardhat Local
-      - NEXT_PUBLIC_RPC_URL=http://hardhat:8545
-      - NEXT_PUBLIC_BLOCK_EXPLORER=http://localhost:8545
-      - NEXT_PUBLIC_PROFILE_NFT_ADDRESS=0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82
-      - NEXT_PUBLIC_MATCH_SYSTEM_ADDRESS=0x9A676e781A523b5d0C0e43731313A708CB607508
-      - NEXT_PUBLIC_VERIFICATION_SYSTEM_ADDRESS=0x0B306BF915C4d645ff596e518fAf3F9669b97016
-      - WATCHPACK_POLLING=true
-    depends_on:
-      - hardhat
-      - deploy
-    restart: unless-stopped
-
-  # Frontend - Instancia 2
-  frontend-2:
-    build:
-      context: .
-      dockerfile: Dockerfile.frontend
-    container_name: cupido-frontend-2
     ports:
       - "3001:3000"
     networks:
@@ -92,16 +64,91 @@ services:
       - /app/frontend/.next
     environment:
       - NEXT_PUBLIC_CHAIN_ID=31337
-      - NEXT_PUBLIC_CHAIN_NAME=Hardhat Local
-      - NEXT_PUBLIC_RPC_URL=http://hardhat:8545
+      - NEXT_PUBLIC_CHAIN_NAME=Hardhat Local Stack 1
+      - NEXT_PUBLIC_RPC_URL=http://hardhat-1:8545
       - NEXT_PUBLIC_BLOCK_EXPLORER=http://localhost:8545
-      - NEXT_PUBLIC_PROFILE_NFT_ADDRESS=0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82
-      - NEXT_PUBLIC_MATCH_SYSTEM_ADDRESS=0x9A676e781A523b5d0C0e43731313A708CB607508
-      - NEXT_PUBLIC_VERIFICATION_SYSTEM_ADDRESS=0x0B306BF915C4d645ff596e518fAf3F9669b97016
+      - NEXT_PUBLIC_PROFILE_NFT_ADDRESS=0x5FbDB2315678afecb367f032d93F642f64180aa3
+      - NEXT_PUBLIC_MATCH_SYSTEM_ADDRESS=0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+      - NEXT_PUBLIC_VERIFICATION_SYSTEM_ADDRESS=0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
       - WATCHPACK_POLLING=true
     depends_on:
-      - hardhat
-      - deploy
+      - hardhat-1
+      - deploy-1
+    restart: unless-stopped
+
+  # ============ STACK 2 ============
+  # Hardhat Node - Stack 2
+  hardhat-2:
+    build:
+      context: .
+      dockerfile: Dockerfile.hardhat
+    container_name: cupido-hardhat-2
+    ports:
+      - "8546:8545"
+    networks:
+      - cupido-network
+    volumes:
+      - ./contracts:/app/contracts
+      - hardhat-data-2:/app/contracts/cache
+      - hardhat-artifacts-2:/app/contracts/artifacts
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "8545" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Deploy contracts - Stack 2
+  deploy-2:
+    build:
+      context: .
+      dockerfile: Dockerfile.hardhat
+    container_name: cupido-deploy-2
+    depends_on:
+      hardhat-2:
+        condition: service_healthy
+    networks:
+      - cupido-network
+    volumes:
+      - ./contracts:/app/contracts
+    working_dir: /app/contracts
+    environment:
+      - HARDHAT_NETWORK=localhost
+    command: >
+      sh -c "
+        echo '🚀 Desplegando contratos en Stack 2...' &&
+        sleep 3 &&
+        npx hardhat run scripts/deployLocal.js --network localhost &&
+        echo '✅ Stack 2 deployment completado'
+      "
+    restart: "no"
+
+  # Frontend - Stack 2
+  frontend-2:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: cupido-frontend-2
+    ports:
+      - "3002:3000"
+    networks:
+      - cupido-network
+    volumes:
+      - ./frontend:/app/frontend
+      - /app/frontend/node_modules
+      - /app/frontend/.next
+    environment:
+      - NEXT_PUBLIC_CHAIN_ID=31337
+      - NEXT_PUBLIC_CHAIN_NAME=Hardhat Local Stack 2
+      - NEXT_PUBLIC_RPC_URL=http://hardhat-2:8545
+      - NEXT_PUBLIC_BLOCK_EXPLORER=http://localhost:8546
+      - NEXT_PUBLIC_PROFILE_NFT_ADDRESS=0x5FbDB2315678afecb367f032d93F642f64180aa3
+      - NEXT_PUBLIC_MATCH_SYSTEM_ADDRESS=0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+      - NEXT_PUBLIC_VERIFICATION_SYSTEM_ADDRESS=0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+      - WATCHPACK_POLLING=true
+    depends_on:
+      - hardhat-2
+      - deploy-2
     restart: unless-stopped
 
 networks:
@@ -109,5 +156,7 @@ networks:
     driver: bridge
 
 volumes:
-  hardhat-data:
-  hardhat-artifacts:
+  hardhat-data-1:
+  hardhat-artifacts-1:
+  hardhat-data-2:
+  hardhat-artifacts-2:
