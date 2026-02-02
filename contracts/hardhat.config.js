@@ -14,7 +14,12 @@ module.exports = {
   },
   networks: {
     hardhat: {
-      chainId: 1337,
+      chainId: 31337,
+    },
+    localhost: {
+      url: process.env.HARDHAT_RPC || "http://hardhat:8545",
+      chainId: 31337,
+      timeout: 60000,
     },
     syscoinTestnet: {
       url: process.env.SYSCOIN_TESTNET_RPC || "https://rpc.tanenbaum.io",

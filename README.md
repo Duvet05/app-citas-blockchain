@@ -6,9 +6,17 @@ Proof of Builders Hackathon - Syscoin Perú 🇵🇪 2026
 
 ---
 
-## 🚀 Quick Start (Demo Local)
+## 🚀 Quick Start
 
-**Ver [DEMO-HACKATHON.md](DEMO-HACKATHON.md) para instrucciones completas.**
+### Opción A: Docker (Recomendado - Todo en 1 comando)
+
+```bash
+docker-compose up --build
+```
+
+Abre http://localhost:3000 y configura MetaMask (ver [DOCKER.md](DOCKER.md))
+
+### Opción B: Manual
 
 ```bash
 # Terminal 1: Hardhat node
@@ -18,7 +26,10 @@ cd contracts && npx hardhat node
 cd frontend && npm run dev
 ```
 
-Luego configura MetaMask con Hardhat Local (Chain ID 31337) y abre http://localhost:3000
+Luego configura MetaMask con Hardhat Local (Chain ID 31337)
+
+**📖 Ver [DEMO-HACKATHON.md](DEMO-HACKATHON.md) para instrucciones completas.**
+**🐳 Ver [DOCKER.md](DOCKER.md) para setup con Docker y acceso desde red local.**
 
 ---
 

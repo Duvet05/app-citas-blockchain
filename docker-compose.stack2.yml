@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # Stack 2 - Hardhat
+  hardhat-stack2:
+    build:
+      context: .
+      dockerfile: Dockerfile.hardhat
+    container_name: cupido-hardhat-stack2
+    ports:
+      - "8546:8545"  # Stack 2 en puerto 8546 (diferente!)
+    networks:
+      - stack2-network
+    volumes:
+      - ./contracts:/app/contracts
+    restart: unless-stopped
+
+  # Stack 2 - Deploy
+  deploy-stack2:
+    build:
+      context: .
+      dockerfile: Dockerfile.hardhat
+    container_name: cupido-deploy-stack2
+    depends_on:
+      - hardhat-stack2
+    networks:
+      - stack2-network
+    volumes:
+      - ./contracts:/app/contracts
+    working_dir: /app/contracts
+    command: >
+      sh -c "
+        sleep 5 &&
+        npx hardhat run scripts/deployLocal.js --network localhost
+      "
+    restart: "no"
+    environment:
+      - HARDHAT_RPC=http://hardhat-stack2:8545
+
+  # Stack 2 - Frontend
+  frontend-stack2:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: cupido-frontend-stack2
+    ports:
+      - "3001:3000"  # Stack 2 en puerto 3001 (diferente!)
+    networks:
+      - stack2-network
+    volumes:
+      - ./frontend:/app/frontend
+      - /app/frontend/node_modules
+    environment:
+      - NEXT_PUBLIC_CHAIN_ID=31337
+      - NEXT_PUBLIC_RPC_URL=http://localhost:8546
+      - NEXT_PUBLIC_PROFILE_NFT_ADDRESS=0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82
+      - NEXT_PUBLIC_MATCH_SYSTEM_ADDRESS=0x9A676e781A523b5d0C0e43731313A708CB607508
+      - NEXT_PUBLIC_VERIFICATION_SYSTEM_ADDRESS=0x0B306BF915C4d645ff596e518fAf3F9669b97016
+    depends_on:
+      - hardhat-stack2
+      - deploy-stack2
+    restart: unless-stopped
+
+networks:
+  stack2-network:
+    driver: bridge

@@ -1,0 +1,18 @@
+# Dockerfile para Frontend
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copiar archivos del frontend
+COPY frontend/package*.json ./frontend/
+COPY frontend/ ./frontend/
+
+# Instalar dependencias
+WORKDIR /app/frontend
+RUN npm ci
+
+# Exponer puerto de Next.js
+EXPOSE 3000
+
+# Comando para iniciar frontend en modo desarrollo
+CMD ["npm", "run", "dev"]

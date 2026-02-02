@@ -1,0 +1,39 @@
+# Node modules
+node_modules
+**/node_modules
+
+# Build artifacts
+.next
+dist
+build
+out
+
+# Hardhat
+cache
+artifacts
+typechain-types
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Documentation
+*.md
+!README.md

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hardhat
+  labels:
+    app: hardhat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hardhat
+  template:
+    metadata:
+      labels:
+        app: hardhat
+    spec:
+      containers:
+      - name: hardhat
+        image: cupido-hardhat:latest
+        imagePullPolicy: Never  # Usa imagen local
+        ports:
+        - containerPort: 8545
+          name: rpc
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hardhat
+spec:
+  type: NodePort
+  selector:
+    app: hardhat
+  ports:
+  - port: 8545
+    targetPort: 8545
+    protocol: TCP

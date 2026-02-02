@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: cupido-frontend:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+          name: http
+        env:
+        - name: NEXT_PUBLIC_CHAIN_ID
+          value: "31337"
+        - name: NEXT_PUBLIC_RPC_URL
+          value: "http://hardhat:8545"
+        - name: NEXT_PUBLIC_PROFILE_NFT_ADDRESS
+          value: "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82"
+        - name: NEXT_PUBLIC_MATCH_SYSTEM_ADDRESS
+          value: "0x9A676e781A523b5d0C0e43731313A708CB607508"
+        - name: NEXT_PUBLIC_VERIFICATION_SYSTEM_ADDRESS
+          value: "0x0B306BF915C4d645ff596e518fAf3F9669b97016"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  type: NodePort
+  selector:
+    app: frontend
+  ports:
+  - port: 3000
+    targetPort: 3000
+    protocol: TCP
