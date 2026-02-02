@@ -34,11 +34,11 @@ spec:
           value: "0x0B306BF915C4d645ff596e518fAf3F9669b97016"
         resources:
           requests:
-            memory: "256Mi"
+            memory: "512Mi"
             cpu: "250m"
           limits:
-            memory: "512Mi"
-            cpu: "500m"
+            memory: "1Gi"
+            cpu: "1000m"
 ---
 apiVersion: v1
 kind: Service
