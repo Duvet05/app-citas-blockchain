@@ -1,15 +1,16 @@
 # Dockerfile para Hardhat Node
 FROM node:18-alpine
 
-WORKDIR /app
+WORKDIR /app/contracts
 
-# Copiar archivos de contratos
-COPY contracts/package*.json ./contracts/
-COPY contracts/ ./contracts/
+# Copiar package.json
+COPY contracts/package.json ./
 
 # Instalar dependencias
-WORKDIR /app/contracts
 RUN npm ci
+
+# Copiar el resto de archivos
+COPY contracts/ ./
 
 # Exponer puerto de Hardhat
 EXPOSE 8545
