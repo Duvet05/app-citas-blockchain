@@ -12,10 +12,20 @@ export const syscoinTestnet = defineChain({
   },
   rpcUrls: {
     default: {
-      http: ['https://rpc.tanenbaum.io'],
+      http: [
+        'https://rpc.tanenbaum.io',
+        'https://syscoin-tanenbaum-evm.publicnode.com',
+        'https://5700.rpc.thirdweb.com',
+      ],
+      ws: ['wss://rpc.tanenbaum.io/wss'],
     },
     public: {
-      http: ['https://rpc.tanenbaum.io'],
+      http: [
+        'https://rpc.tanenbaum.io',
+        'https://syscoin-tanenbaum-evm.publicnode.com',
+        'https://5700.rpc.thirdweb.com',
+      ],
+      ws: ['wss://rpc.tanenbaum.io/wss'],
     },
   },
   blockExplorers: {
@@ -25,6 +35,7 @@ export const syscoinTestnet = defineChain({
     },
   },
   testnet: true,
+  pollingInterval: 4000, // 4s es suficiente para 60s block time, reduce polling en 4x
 });
 
 // Hardhat Local (para desarrollo/demo local)
@@ -45,6 +56,7 @@ export const hardhatLocal = defineChain({
     },
   },
   testnet: true,
+  pollingInterval: 1000, // local: blocks instant, keep polling fast
 });
 
 export const config = getDefaultConfig({

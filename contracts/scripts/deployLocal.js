@@ -36,30 +36,29 @@ async function main() {
   const verificationAddress = await verificationSystem.getAddress();
   console.log(`✅ VerificationSystem desplegado en: ${verificationAddress}`);
 
-  // Crear perfiles de demo
-  console.log("\n📝 Creando perfiles de demo...");
+  // Crear perfiles de demo en paralelo (4 senders diferentes → nonces independientes)
+  console.log("\n📝 Creando perfiles de demo en paralelo...");
   const [owner, user1, user2, user3] = await hre.ethers.getSigners();
 
-  await profileNFT.connect(owner).createProfile("Alice", 25, "Entusiasta de Web3", "Blockchain, Crypto, DAO", "https://i.pravatar.cc/150?img=1");
-  console.log(`✅ Perfil creado para: ${owner.address}`);
+  await Promise.all([
+    profileNFT.connect(owner).createProfile("Alice", 25, "Entusiasta de Web3", "Blockchain, Crypto, DAO", "https://i.pravatar.cc/150?img=1"),
+    profileNFT.connect(user1).createProfile("Bob", 28, "Developer blockchain", "Solidity, DeFi, NFTs", "https://i.pravatar.cc/150?img=2"),
+    profileNFT.connect(user2).createProfile("Carol", 26, "Diseñadora UX", "Design, Web3, UI/UX", "https://i.pravatar.cc/150?img=3"),
+    profileNFT.connect(user3).createProfile("David", 30, "Product Manager", "Startups, Tech, Innovation", "https://i.pravatar.cc/150?img=4"),
+  ]);
+  console.log(`✅ Perfiles creados: Alice, Bob, Carol, David`);
 
-  await profileNFT.connect(user1).createProfile("Bob", 28, "Developer blockchain", "Solidity, DeFi, NFTs", "https://i.pravatar.cc/150?img=2");
-  console.log(`✅ Perfil creado para: ${user1.address}`);
-
-  await profileNFT.connect(user2).createProfile("Carol", 26, "Diseñadora UX", "Design, Web3, UI/UX", "https://i.pravatar.cc/150?img=3");
-  console.log(`✅ Perfil creado para: ${user2.address}`);
-
-  await profileNFT.connect(user3).createProfile("David", 30, "Product Manager", "Startups, Tech, Innovation", "https://i.pravatar.cc/150?img=4");
-  console.log(`✅ Perfil creado para: ${user3.address}`);
-
-  // Crear algunas interacciones de demo
-  console.log("\n📝 Creando reconocimientos de demo...");
-  await matchSystem.connect(owner).likeProfile(user1.address);
-  await matchSystem.connect(user1).likeProfile(owner.address);
+  // Crear reconocimientos en paralelo (4 senders diferentes, 1 like cada uno)
+  // Par A: owner ↔ user1 (match mutuo)
+  // Par B: user2 ↔ user3 (match mutuo)
+  console.log("\n📝 Creando reconocimientos de demo en paralelo...");
+  await Promise.all([
+    matchSystem.connect(owner).likeProfile(user1.address),
+    matchSystem.connect(user1).likeProfile(owner.address),
+    matchSystem.connect(user2).likeProfile(user3.address),
+    matchSystem.connect(user3).likeProfile(user2.address),
+  ]);
   console.log(`✅ Reconocimiento mutuo entre Alice y Bob`);
-
-  await matchSystem.connect(user2).likeProfile(user3.address);
-  await matchSystem.connect(user3).likeProfile(user2.address);
   console.log(`✅ Reconocimiento mutuo entre Carol y David`);
 
   console.log("\n✅ Datos de demo creados exitosamente!");

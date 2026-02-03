@@ -68,42 +68,46 @@ async function main() {
   // Amount to send to each demo wallet (enough for creating profile)
   const fundAmount = hre.ethers.parseEther("0.01"); // 0.01 SYS each
 
-  // Fund wallets and create profiles
-  let successCount = 0;
-  let failCount = 0;
+  // ── Fase 1: Fund todos los wallets (mismo sender → enviar secuencial, esperar en paralelo)
+  console.log("💸 Fase 1: Enviando fondos a todos los wallets...");
+  const fundTxs = [];
+  for (let i = 0; i < demoWallets.length; i++) {
+    const tx = await deployer.sendTransaction({
+      to: demoWallets[i].address,
+      value: fundAmount,
+    });
+    fundTxs.push(tx);
+    console.log(`   [${i + 1}/${demoWallets.length}] Fund tx enviada: ${tx.hash}`);
+  }
+  console.log("   ⏳ Esperando confirmación de todas las fund txs...");
+  await Promise.all(fundTxs.map((tx) => tx.wait()));
+  console.log("   ✅ Todos los wallets fondeados.\n");
 
-  for (let i = 0; i < DEMO_PROFILES.length; i++) {
-    const profile = DEMO_PROFILES[i];
-    const wallet = demoWallets[i];
-
-    try {
-      console.log(`\n${i + 1}. Creating profile for: ${profile.name}`);
-      console.log(`   Wallet: ${wallet.address}`);
-
-      // Fund the wallet
-      console.log(`   💸 Funding wallet...`);
-      const fundTx = await deployer.sendTransaction({
-        to: wallet.address,
-        value: fundAmount,
-      });
-      await fundTx.wait();
-      console.log(`   ✅ Funded with ${hre.ethers.formatEther(fundAmount)} SYS`);
-
-      // Create profile
-      console.log(`   📝 Creating profile...`);
-      const createTx = await profileNFT.connect(wallet).createProfile(
+  // ── Fase 2: Crear perfiles en paralelo (senders diferentes → nonces independientes)
+  console.log("📝 Fase 2: Creando perfiles en paralelo...");
+  const profileResults = await Promise.allSettled(
+    DEMO_PROFILES.map(async (profile, i) => {
+      const wallet = demoWallets[i];
+      const tx = await profileNFT.connect(wallet).createProfile(
         profile.name,
         profile.age,
         profile.bio,
-        profile.interests
+        profile.interests,
+        "" // tokenURI
       );
-      await createTx.wait();
-      console.log(`   ✅ Profile created!`);
+      await tx.wait();
+      console.log(`   ✅ [${i + 1}] Perfil creado: ${profile.name}`);
+    })
+  );
 
+  let successCount = 0;
+  let failCount = 0;
+  for (const result of profileResults) {
+    if (result.status === "fulfilled") {
       successCount++;
-    } catch (error) {
-      console.error(`   ❌ Failed to create profile: ${error.message}`);
+    } else {
       failCount++;
+      console.error(`   ❌ Failed: ${result.reason.message}`);
     }
   }
 

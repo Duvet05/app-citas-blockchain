@@ -25,6 +25,7 @@ module.exports = {
       url: process.env.SYSCOIN_TESTNET_RPC || "https://rpc.tanenbaum.io",
       chainId: 5700,
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+      timeout: 120000, // 2 min: block time es ~60s, necesita margen
     },
     syscoinMainnet: {
       url: process.env.SYSCOIN_MAINNET_RPC || "https://rpc.syscoin.org",
