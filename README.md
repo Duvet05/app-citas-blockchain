@@ -194,9 +194,13 @@ getUserVerifications(user) → (types[], statuses[], timestamps[])
 
 | Network | Status | Contracts |
 |---------|--------|-----------|
+| Syscoin NEVM Testnet | ✅ Live | Ver [Explorer](https://explorer.tanenbaum.io) |
 | Hardhat Local | ✅ Deployed | Ver [deployments-local.json](contracts/deployments-local.json) |
-| Syscoin NEVM Testnet | ⏳ Pending | Esperando fondos de faucet |
-| Rollux Testnet | ⏳ Pending | Esperando fondos de faucet |
+
+**Syscoin NEVM Testnet - Contract Addresses:**
+- `ProfileNFT`: [0x8E9EB3AB9D05aF16ccECE8EbB147a5A7B0392C84](https://explorer.tanenbaum.io/address/0x8E9EB3AB9D05aF16ccECE8EbB147a5A7B0392C84)
+- `MatchSystem`: [0x6425F8c436bbA6E9ceB5030Ebca5BB2742110401](https://explorer.tanenbaum.io/address/0x6425F8c436bbA6E9ceB5030Ebca5BB2742110401)
+- `VerificationSystem`: [0x99b9e3fA3067E085dC42aAb2C35a1587405f8060](https://explorer.tanenbaum.io/address/0x99b9e3fA3067E085dC42aAb2C35a1587405f8060)
 
 ## 👥 Equipo: Cupido PoDA
 
