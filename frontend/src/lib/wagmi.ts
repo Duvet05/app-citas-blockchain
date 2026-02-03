@@ -13,16 +13,16 @@ export const syscoinTestnet = defineChain({
   rpcUrls: {
     default: {
       http: [
+        'https://syscoin-tanenbaum-evm.publicnode.com', // Fastest: 150ms
         'https://rpc.tanenbaum.io',
-        'https://syscoin-tanenbaum-evm.publicnode.com',
         'https://5700.rpc.thirdweb.com',
       ],
       ws: ['wss://rpc.tanenbaum.io/wss'],
     },
     public: {
       http: [
-        'https://rpc.tanenbaum.io',
         'https://syscoin-tanenbaum-evm.publicnode.com',
+        'https://rpc.tanenbaum.io',
         'https://5700.rpc.thirdweb.com',
       ],
       ws: ['wss://rpc.tanenbaum.io/wss'],
@@ -35,7 +35,7 @@ export const syscoinTestnet = defineChain({
     },
   },
   testnet: true,
-  pollingInterval: 4000, // 4s es suficiente para 60s block time, reduce polling en 4x
+  pollingInterval: 6000, // PoW merge-mining: blocks 20-280s, 6s polling óptimo
 });
 
 // Hardhat Local (para desarrollo/demo local)
