@@ -3,6 +3,8 @@ export const CONTRACT_ADDRESSES = {
   PROFILE_NFT: process.env.NEXT_PUBLIC_PROFILE_NFT_ADDRESS || '',
   MATCH_SYSTEM: process.env.NEXT_PUBLIC_MATCH_SYSTEM_ADDRESS || '',
   VERIFICATION_SYSTEM: process.env.NEXT_PUBLIC_VERIFICATION_SYSTEM_ADDRESS || '',
+  CUPIDO_BANK: process.env.NEXT_PUBLIC_CUPIDO_BANK_ADDRESS || '',
+  PAID_MATCH_SYSTEM: process.env.NEXT_PUBLIC_PAID_MATCH_SYSTEM_ADDRESS || '',
 } as const;
 
 // ABIs - simplified versions for frontend use
@@ -59,3 +61,51 @@ export const VERIFICATION_LABELS = {
   [VerificationType.EDUCATION]: 'Education Verified',
   [VerificationType.EMPLOYMENT]: 'Employment Verified',
 } as const;
+
+// CupidoBank ABI
+export const CUPIDO_BANK_ABI = [
+  'function deposit() external payable',
+  'function withdraw(uint256 _amount) external',
+  'function authorizeContract(address _contract) external',
+  'function requestLoan(uint256 _amount) external',
+  'function repayLoan(uint256 _loanIndex) external payable',
+  'function claimRewards() external',
+  'function getTreasuryBalance() external view returns (uint256)',
+  'function pendingRewards(address) public view returns (uint256)',
+  'function totalBorrowed(address) public view returns (uint256)',
+  'function totalRepaid(address) public view returns (uint256)',
+  'function getActiveLoansCount(address _user) public view returns (uint256)',
+  'function getUserLoans(address _user) external view returns (tuple(uint256 amount, uint256 timestamp, bool repaid)[])',
+  'function getUserDebt(address _user) external view returns (uint256)',
+  'function maxLoanAmount() public view returns (uint256)',
+  'function maxLoansPerUser() public view returns (uint256)',
+  'function totalLoaned() public view returns (uint256)',
+  'function totalRewardsPaid() public view returns (uint256)',
+  'function totalDeposited() public view returns (uint256)',
+  'event Deposit(address indexed from, uint256 amount)',
+  'event LoanGranted(address indexed borrower, uint256 amount, uint256 loanIndex)',
+  'event LoanRepaid(address indexed borrower, uint256 amount, uint256 loanIndex)',
+  'event RewardClaimed(address indexed user, uint256 amount)',
+] as const;
+
+// PaidMatchSystem ABI
+export const PAID_MATCH_SYSTEM_ABI = [
+  'function likeProfile(address _liked) external payable',
+  'function unmatch(address _otherUser) external',
+  'function getUserMatches(address _user) public view returns (tuple(address user1, address user2, uint256 timestamp, bool isActive)[])',
+  'function getActiveMatches(address _user) public view returns (tuple(address user1, address user2, uint256 timestamp, bool isActive)[])',
+  'function isMatch(address _user1, address _user2) public view returns (bool)',
+  'function getReceivedLikes() public view returns (address[])',
+  'function getSentLikes() public view returns (address[])',
+  'function getTotalMatches() public view returns (uint256)',
+  'function likeFee() public view returns (uint256)',
+  'function matchReward() public view returns (uint256)',
+  'function totalEarned(address) public view returns (uint256)',
+  'function totalSpent(address) public view returns (uint256)',
+  'function getUserEconomics(address _user) external view returns (uint256 earned, uint256 spent, uint256 pending)',
+  'event LikeGiven(address indexed liker, address indexed liked, uint256 timestamp)',
+  'event MatchCreated(address indexed user1, address indexed user2, uint256 matchId, uint256 timestamp)',
+  'event MatchDeactivated(uint256 indexed matchId)',
+  'event LikeFeePaid(address indexed liker, uint256 bankShare, uint256 userShare)',
+  'event MatchRewardPaid(address indexed user1, address indexed user2, uint256 rewardPerUser)',
+] as const;

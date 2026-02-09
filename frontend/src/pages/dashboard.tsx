@@ -2,17 +2,20 @@ import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import { useRouter } from 'next/router';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { Send, Education as EducationIcon, UserMultiple } from '@carbon/icons-react';
+import { Send, Education as EducationIcon, UserMultiple, Currency } from '@carbon/icons-react';
 import KarmaScore from '../components/KarmaScore';
 import { useProfile } from '../hooks/useProfile';
 import { useMatches } from '../hooks/useMatches';
+import { useBank } from '../hooks/useBank';
+import { formatEther } from 'viem';
 import toast from 'react-hot-toast';
 
 export default function Dashboard() {
   const { address, isConnected } = useAccount();
   const router = useRouter();
   const { hasProfile, profile, createProfile, isCreating: profileLoading } = useProfile();
-  const { likeProfile, matches } = useMatches();
+  const { likeProfile, matches, likeFee, economics } = useMatches(address);
+  const { pendingRewards, treasuryBalance } = useBank(address);
 
   const [recognitionAddress, setRecognitionAddress] = useState('');
   const [isGivingRecognition, setIsGivingRecognition] = useState(false);
@@ -127,11 +130,11 @@ export default function Dashboard() {
                   <span className="text-sm font-medium">Ver Reconocimientos</span>
                 </button>
                 <button
-                  disabled
-                  className="w-full flex items-center gap-2 px-4 py-2 bg-gray-50 text-gray-400 rounded-lg cursor-not-allowed"
+                  onClick={() => router.push('/bank')}
+                  className="w-full flex items-center gap-2 px-4 py-2 bg-yellow-50 hover:bg-yellow-100 text-yellow-700 rounded-lg transition-colors"
                 >
-                  <EducationIcon size={20} />
-                  <span className="text-sm font-medium">Módulos Educativos (Próximamente)</span>
+                  <Currency size={20} />
+                  <span className="text-sm font-medium">CupidoBank</span>
                 </button>
               </div>
             </div>
@@ -146,7 +149,7 @@ export default function Dashboard() {
               </h2>
               <p className="text-sm text-gray-600 mb-4">
                 Reconoce a alguien que tuvo una interacción positiva contigo.
-                El reconocimiento cuesta gas (anti-spam).
+                Costo: {likeFee ? parseFloat(formatEther(likeFee)).toFixed(3) : '0.010'} tSYS (50% para el receptor, 50% al banco).
               </p>
 
               <div className="flex gap-2">
@@ -220,6 +223,37 @@ export default function Dashboard() {
                 </button>
               </div>
             )}
+
+            {/* Economics Card */}
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Economía</h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div className="bg-green-50 rounded-lg p-3">
+                  <p className="text-lg font-bold text-green-600">
+                    {economics.earned ? parseFloat(formatEther(economics.earned)).toFixed(3) : '0'} tSYS
+                  </p>
+                  <p className="text-xs text-gray-500">Ganado</p>
+                </div>
+                <div className="bg-red-50 rounded-lg p-3">
+                  <p className="text-lg font-bold text-red-500">
+                    {economics.spent ? parseFloat(formatEther(economics.spent)).toFixed(3) : '0'} tSYS
+                  </p>
+                  <p className="text-xs text-gray-500">Gastado</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-3">
+                  <p className="text-lg font-bold text-purple-600">
+                    {pendingRewards ? parseFloat(formatEther(pendingRewards)).toFixed(3) : '0'} tSYS
+                  </p>
+                  <p className="text-xs text-gray-500">Por cobrar</p>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-3">
+                  <p className="text-lg font-bold text-blue-600">
+                    {treasuryBalance ? parseFloat(formatEther(treasuryBalance)).toFixed(2) : '0'} tSYS
+                  </p>
+                  <p className="text-xs text-gray-500">Banco</p>
+                </div>
+              </div>
+            </div>
 
             {/* Info Card */}
             <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200 p-6">
