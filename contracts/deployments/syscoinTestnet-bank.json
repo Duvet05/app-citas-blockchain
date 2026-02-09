@@ -1,0 +1,13 @@
+{
+  "network": "syscoinTestnet",
+  "chainId": 5700,
+  "contracts": {
+    "ProfileNFT": "0x8E9EB3AB9D05aF16ccECE8EbB147a5A7B0392C84",
+    "MatchSystem_OLD": "0x6425F8c436bbA6E9ceB5030Ebca5BB2742110401",
+    "VerificationSystem": "0x99b9e3fA3067E085dC42aAb2C35a1587405f8060",
+    "CupidoBank": "0x8c4aA7669521CE807Cd0bb7590843e40a847b520",
+    "PaidMatchSystem": "0x475eC8aB7d3a43384805Dca8771Ea816061b3329"
+  },
+  "deployer": "0x2Ea9df907467D5F5a988f5401112f04E9242110B",
+  "timestamp": "2026-02-09T21:51:25.302Z"
+}
