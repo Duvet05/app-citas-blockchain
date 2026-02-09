@@ -10,7 +10,9 @@
     "deploy:rollux": "hardhat run scripts/deploy.js --network rolluxTestnet",
     "deploy:mainnet": "hardhat run scripts/deploy.js --network syscoinMainnet",
     "seed:syscoin": "hardhat run scripts/seed.js --network syscoinTestnet",
-    "seed:rollux": "hardhat run scripts/seed.js --network rolluxTestnet"
+    "seed:rollux": "hardhat run scripts/seed.js --network rolluxTestnet",
+    "deploy:bank": "hardhat run scripts/deployBank.js",
+    "deploy:bank:syscoin": "hardhat run scripts/deployBank.js --network syscoinTestnet"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
